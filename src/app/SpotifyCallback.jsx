@@ -35,7 +35,7 @@ export default function SpotifyCallback() {
           window.history.replaceState(null, null, window.location.pathname);
 
           // Navigate to playlists
-          navigate("/playlists");
+          navigate("/");
           return;
         }
       }
@@ -43,7 +43,7 @@ export default function SpotifyCallback() {
       // Check if we already have a token
       const existingToken = localStorage.getItem("spotify_access_token");
       if (existingToken) {
-        navigate("/playlists");
+        navigate("/");
         return;
       }
 

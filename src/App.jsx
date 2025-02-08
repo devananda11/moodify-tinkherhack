@@ -8,9 +8,8 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/playlists" element={<Playlist />} />
-        <Route path="/callback" element={<SpotifyCallback />} />
+        
+        <Route path="/" element={<Playlist />} />
         <Route path="/profile" element={<Navbar/>}/>
       </Routes>
     </Router>
