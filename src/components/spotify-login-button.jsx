@@ -1,28 +1,38 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom";
+"use client";
+import { Button } from "@/components/ui/button";
 
 const CLIENT_ID = "2db343c0ce3b41c7be4f3363cfdd005a";
-const REDIRECT_URI = "http://localhost:5173/callback";
+const REDIRECT_URI =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5173/callback"
+    : "https://moodify-devananda11s-projects.vercel.app/callback";
+
 const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
 const RESPONSE_TYPE = "token";
 
+// Define required scopes
+const SCOPES = [
+  'user-read-private',
+  'user-read-email',
+  'playlist-modify-public',
+  'playlist-modify-private'
+].join(' ');
+
 export default function SpotifyLoginButton() {
-    const navigate = useNavigate();
-  
-    const handleLogin = () => {
-      const authUrl = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
-        REDIRECT_URI
-      )}&response_type=${RESPONSE_TYPE}&scope=user-read-private user-read-email playlist-modify-public playlist-modify-private`;
-      
-      // Store URL in localStorage
-      localStorage.setItem("spotify_auth_url", authUrl);
-      
-      // Redirect to Spotify login
-      window.location.href = authUrl;
-    };
-  
+  const handleLogin = () => {
+    // Generate random state
+    const state = Math.random().toString(36).substring(7);
+    localStorage.setItem("spotify_auth_state", state);
+
+    const authUrl = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+      REDIRECT_URI
+    )}&response_type=${RESPONSE_TYPE}&scope=${encodeURIComponent(SCOPES)}&state=${state}&show_dialog=true`;
+
+    console.log("Generated Spotify Auth URL:", authUrl);
+    localStorage.setItem("spotify_auth_url", authUrl);
+    
+    window.location.href = authUrl;
+  };
 
   return (
     <Button
@@ -34,6 +44,5 @@ export default function SpotifyLoginButton() {
       </svg>
       Login with Spotify
     </Button>
-  )
+  );
 }
-
