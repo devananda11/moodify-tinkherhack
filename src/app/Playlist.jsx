@@ -225,7 +225,8 @@ const IntegratedEmotionPlaylist = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center bg-gradient-to-b from-blue-500 to-blue-600 p-4">
+    <div className="min-h-screen w-full flex flex-col items-center bg-[#1DB954] p-4">
+    
       <div className="flex items-center gap-3 mb-12 mt-8">
         <Music2 className="w-12 h-12 text-white" />
         <div className="text-4xl font-bold text-white">Emotion-Based Playlist Generator</div>
@@ -245,7 +246,7 @@ const IntegratedEmotionPlaylist = () => {
             <Button
               type="submit"
               disabled={!text.trim() || loading}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              className="w-full bg-green-500 hover:bg-green-600 text-white"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -263,7 +264,7 @@ const IntegratedEmotionPlaylist = () => {
           {mood && (
             <div className="w-full">
               <h3 className="text-lg font-semibold mb-2">Detected Mood:</h3>
-              <div className="p-3 bg-blue-100 rounded-lg text-lg font-medium text-blue-800">
+              <div className="p-3 bg-green-100 rounded-lg text-lg font-medium text-white">
                 {mood.toUpperCase()}
               </div>
             </div>
