@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Button } from "@/components/ui/button"
-import Home from './app/page'
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./app/page"; // Ensure this file exists
+import Playlist from "./app/Playlist";
+import SpotifyCallback from "./app/SpotifyCallback"; // Create this file
 
 export default function App() {
   return (
-    <>
-    <Home/>
-    </>
-    
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/playlists" element={<Playlist />} />
+        <Route path="/callback" element={<SpotifyCallback />} />
+      </Routes>
+    </Router>
+  );
 }
-
-

@@ -1,13 +1,28 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom";
+
+const CLIENT_ID = "2db343c0ce3b41c7be4f3363cfdd005a";
+const REDIRECT_URI = "http://localhost:5173/callback";
+const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+const RESPONSE_TYPE = "token";
 
 export default function SpotifyLoginButton() {
-  const handleLogin = () => {
-    // Here you would typically initiate the Spotify Auth flow
-    console.log("Initiating Spotify login")
-    // You'll need to implement the actual Spotify Auth logic here
-  }
+    const navigate = useNavigate();
+  
+    const handleLogin = () => {
+      const authUrl = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+        REDIRECT_URI
+      )}&response_type=${RESPONSE_TYPE}&scope=user-read-private user-read-email playlist-modify-public playlist-modify-private`;
+      
+      window.location.href = authUrl;
+      
+      setTimeout(() => {
+        navigate("/playlists");
+      }, 2000); // Adjust delay as needed
+    };
+  
 
   return (
     <Button
