@@ -60,8 +60,8 @@ export default function Navbar() {
         ) : (
           <Button
             onClick={() => navigate("/")}
-            className="bg-green-500 hover:bg-green-600"
-          >
+            className="bg-green-500 hover:bg-green-600 text-black">
+          
             Login
           </Button>
         )}
