@@ -247,10 +247,10 @@ const IntegratedEmotionPlaylist = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen w-full flex flex-col items-center bg-[#1DB954] p-4">
+      <div className="min-h-screen w-full flex flex-col items-center bg-[#15892d] p-4">
         <div className="flex items-center gap-3 mb-12 mt-8">
-          <Music2 className="w-12 h-12 text-white" />
-          <div className="text-4xl font-bold text-white">Your Playlist Factory</div>
+          <Music2 className="w-12 h-12  text-black" />
+          <div className="text-4xl font-bold text-black">Your Playlist Factory</div>
         </div>
 
         <Card className="w-full max-w-2xl bg-white shadow-lg border-0">
@@ -267,7 +267,7 @@ const IntegratedEmotionPlaylist = () => {
               <Button
                 type="submit"
                 disabled={!text.trim() || loading}
-                className="w-full bg-green-500 hover:bg-green-600 text-white"
+                className="w-full bg-green-500 hover:bg-green-600 text-black font-bold"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -281,15 +281,8 @@ const IntegratedEmotionPlaylist = () => {
                 {error}
               </div>
             )}
-
-            {mood && (
-              <div className="w-full">
-                <h3 className="text-lg font-semibold mb-2">Detected Mood:</h3>
-                <div className="p-3 bg-green-100 rounded-lg text-lg font-medium text-green-800">
-                  {mood.toUpperCase()}
-                </div>
-              </div>
-            )}
+            
+     
 
             {recommendations.length > 0 && (
               <div className="w-full space-y-4">
@@ -300,7 +293,7 @@ const IntegratedEmotionPlaylist = () => {
                   <Button
                     onClick={handleCreatePlaylistClick}
                     disabled={!accessToken}
-                    className="bg-green-500 hover:bg-green-600 text-white"
+                    className="bg-green-500 hover:bg-green-600 text-black"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Create Playlist
@@ -310,7 +303,7 @@ const IntegratedEmotionPlaylist = () => {
                 {playlistUrl && (
                   <Button
                     onClick={() => window.open(playlistUrl, '_blank')}
-                    className="w-full bg-green-500 hover:bg-green-600 text-white"
+                    className="w-full bg-green-500 hover:bg-green-600 text-black"
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
                     Open Playlist in Spotify
@@ -377,8 +370,9 @@ const IntegratedEmotionPlaylist = () => {
           </DialogContent>
         </Dialog>
 
-        <p className="mt-8 text-white text-sm">
-          Powered by HuggingFace & Spotify API
+        
+        <p className="mt-8 text-black text-sm">
+        Powered by HuggingFace & Spotify API
         </p>
       </div>
     </>
