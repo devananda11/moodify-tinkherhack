@@ -239,7 +239,7 @@ const IntegratedEmotionPlaylist = () => {
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="How are you feeling? Share your thoughts..."
-              className="w-full p-4 border rounded-lg min-h-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-4 border rounded-lg min-h-32 focus:outline-none focus:ring-2 focus:ring-green-500"
               disabled={loading}
             />
             
