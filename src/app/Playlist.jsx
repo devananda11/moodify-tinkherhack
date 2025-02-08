@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Music2, Loader2, Plus, ExternalLink } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import Navbar from './Navbar';
 
 const EMOTION_TO_MOOD = {
   joy: "happy",
@@ -69,6 +72,8 @@ const IntegratedEmotionPlaylist = () => {
   const [error, setError] = useState('');
   const [accessToken, setAccessToken] = useState('');
   const [playlistUrl, setPlaylistUrl] = useState('');
+  const [playlistDialogOpen, setPlaylistDialogOpen] = useState(false);
+  const [playlistName, setPlaylistName] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -85,9 +90,10 @@ const IntegratedEmotionPlaylist = () => {
       }
     }
   }, []);
+
   const deleteSong = (trackId) => {
-    setRecommendations((prev) => prev.filter((track) => track.id !== trackId));
-  };
+    setRecommendations((prev) => prev.filter((track) => track.id !== trackId));
+  };
 
   const analyzeMood = async (text) => {
     setLoading(true);
@@ -138,7 +144,7 @@ const IntegratedEmotionPlaylist = () => {
     
     try {
       const response = await axios.get('https://spotify23.p.rapidapi.com/recommendations/', {
-        params: { limit: '5', ...MOOD_CONFIGS[mood] },
+        params: { limit: '15', ...MOOD_CONFIGS[mood] },
         headers: {
           'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
           'x-rapidapi-host': 'spotify23.p.rapidapi.com'
@@ -158,8 +164,21 @@ const IntegratedEmotionPlaylist = () => {
     }
   };
 
+  const handleCreatePlaylistClick = () => {
+    if (!accessToken) {
+      toast({
+        title: "Error",
+        description: "Please log in to Spotify first.",
+        variant: "destructive"
+      });
+      return;
+    }
+    setPlaylistName(MOOD_CONFIGS[mood].playlistName); // Set default name
+    setPlaylistDialogOpen(true);
+  };
+
   const createPlaylist = async () => {
-    if (!accessToken || !mood || recommendations.length === 0) {
+    if (!accessToken || !mood || recommendations.length === 0 || !playlistName.trim()) {
       toast({
         title: "Error",
         description: "Missing required data to create playlist.",
@@ -177,7 +196,7 @@ const IntegratedEmotionPlaylist = () => {
       const playlistResponse = await axios.post(
         `https://api.spotify.com/v1/users/${userId}/playlists`,
         {
-          name: MOOD_CONFIGS[mood].playlistName,
+          name: playlistName,
           description: `A playlist generated based on your ${mood} mood`,
           public: false
         },
@@ -204,6 +223,7 @@ const IntegratedEmotionPlaylist = () => {
         }
       );
 
+      setPlaylistDialogOpen(false);
       toast({
         title: "Success!",
         description: "Playlist created and songs added successfully.",
@@ -225,117 +245,143 @@ const IntegratedEmotionPlaylist = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center bg-gradient-to-b from-blue-500 to-blue-600 p-4">
-      <div className="flex items-center gap-3 mb-12 mt-8">
-        <Music2 className="w-12 h-12 text-white" />
-        <div className="text-4xl font-bold text-white">Emotion-Based Playlist Generator</div>
-      </div>
+    <>
+      <Navbar />
+      <div className="min-h-screen w-full flex flex-col items-center bg-[#1DB954] p-4">
+        <div className="flex items-center gap-3 mb-12 mt-8">
+          <Music2 className="w-12 h-12 text-white" />
+          <div className="text-4xl font-bold text-white">Your Playlist Factory</div>
+        </div>
 
-      <Card className="w-full max-w-2xl bg-white shadow-lg border-0">
-        <CardContent className="flex flex-col items-center p-8 space-y-8">
-          <form onSubmit={handleSubmit} className="w-full space-y-4">
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="How are you feeling? Share your thoughts..."
-              className="w-full p-4 border rounded-lg min-h-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              disabled={loading}
-            />
-            
-            <Button
-              type="submit"
-              disabled={!text.trim() || loading}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : null}
-              {loading ? 'Analyzing...' : 'Analyze & Get Songs'}
-            </Button>
-          </form>
+        <Card className="w-full max-w-2xl bg-white shadow-lg border-0">
+          <CardContent className="flex flex-col items-center p-8 space-y-8">
+            <form onSubmit={handleSubmit} className="w-full space-y-4">
+              <textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="How are you feeling? Share your thoughts..."
+                className="w-full p-4 border rounded-lg min-h-32 focus:outline-none focus:ring-2 focus:ring-green-500"
+                disabled={loading}
+              />
+              
+              <Button
+                type="submit"
+                disabled={!text.trim() || loading}
+                className="w-full bg-green-500 hover:bg-green-600 text-white"
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : null}
+                {loading ? 'Analyzing...' : 'Analyze & Get Songs'}
+              </Button>
+            </form>
 
-          {error && (
-            <div className="w-full p-4 bg-red-100 text-red-700 rounded-lg">
-              {error}
-            </div>
-          )}
-
-          {mood && (
-            <div className="w-full">
-              <h3 className="text-lg font-semibold mb-2">Detected Mood:</h3>
-              <div className="p-3 bg-blue-100 rounded-lg text-lg font-medium text-blue-800">
-                {mood.toUpperCase()}
+            {error && (
+              <div className="w-full p-4 bg-red-100 text-red-700 rounded-lg">
+                {error}
               </div>
-            </div>
-          )}
+            )}
 
-          {recommendations.length > 0 && (
-            <div className="w-full space-y-4">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">
-                  Recommended Songs:
-                </h3>
-                <Button
-                  onClick={createPlaylist}
-                  disabled={!accessToken}
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Playlist
-                </Button>
+            {mood && (
+              <div className="w-full">
+                <h3 className="text-lg font-semibold mb-2">Detected Mood:</h3>
+                <div className="p-3 bg-green-100 rounded-lg text-lg font-medium text-green-800">
+                  {mood.toUpperCase()}
+                </div>
               </div>
+            )}
 
-              {playlistUrl && (
-                <Button
-                  onClick={() => window.open(playlistUrl, '_blank')}
-                  className="w-full bg-green-500 hover:bg-green-600 text-white"
-                >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Open Playlist in Spotify
-                </Button>
-              )}
-
-              {recommendations.map((track, index) => (
-                <Card key={index} className="p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
-                  <div className="flex items-center gap-4 justify-between w-full">
-                    <div className="flex items-center gap-4">
-                        {track.album?.images?.[0]?.url ? (
-                            <img 
-                                src={track.album.images[0].url} 
-                                alt={track.name}
-                                className="w-12 h-12 rounded-md object-cover"
-                            />
-                        ) : (
-                            <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
-                                <Music2 className="w-6 h-6 text-gray-500" />
-                            </div>
-                        )}
-                        <div>
-                            <div className="font-medium text-gray-900">{track.name}</div>
-                            <div className="text-sm text-gray-500">
-                                {track.artists?.map(artist => artist.name).join(', ')}
-                            </div>
-                        </div>
-                    </div>
-                    <button
-                        onClick={() => deleteSong(track.id)}
-                        className="text-red-500 hover:text-red-700 transition"
-                    >
-                        🗑 Delete
-                    </button>
+            {recommendations.length > 0 && (
+              <div className="w-full space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-semibold">
+                    Recommended Songs:
+                  </h3>
+                  <Button
+                    onClick={handleCreatePlaylistClick}
+                    disabled={!accessToken}
+                    className="bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Playlist
+                  </Button>
                 </div>
 
-                </Card>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                {playlistUrl && (
+                  <Button
+                    onClick={() => window.open(playlistUrl, '_blank')}
+                    className="w-full bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Open Playlist in Spotify
+                  </Button>
+                )}
 
-      <p className="mt-8 text-white text-sm">
-        Powered by HuggingFace & Spotify API
-      </p>
-    </div>
+                {recommendations.map((track, index) => (
+                  <Card key={index} className="p-4 bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center gap-4 justify-between w-full">
+                      <div className="flex items-center gap-4">
+                        {track.album?.images?.[0]?.url ? (
+                          <img 
+                            src={track.album.images[0].url} 
+                            alt={track.name}
+                            className="w-12 h-12 rounded-md object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                            <Music2 className="w-6 h-6 text-gray-500" />
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-medium text-gray-900">{track.name}</div>
+                          <div className="text-sm text-gray-500">
+                            {track.artists?.map(artist => artist.name).join(', ')}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => deleteSong(track.id)}
+                        className="text-red-500 hover:text-red-700 transition"
+                      >
+                        🗑 Delete
+                      </button>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Dialog open={playlistDialogOpen} onOpenChange={setPlaylistDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create New Playlist</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <Input
+                value={playlistName}
+                onChange={(e) => setPlaylistName(e.target.value)}
+                placeholder="Enter playlist name"
+                className="w-full"
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setPlaylistDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={createPlaylist} disabled={!playlistName.trim()}>
+                Create
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <p className="mt-8 text-white text-sm">
+          Powered by HuggingFace & Spotify API
+        </p>
+      </div>
+    </>
   );
 };
 

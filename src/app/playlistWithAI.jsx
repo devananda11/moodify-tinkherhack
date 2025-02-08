@@ -7,12 +7,17 @@ const EMOTION_TO_MOOD = {
   anger: "anger",
   fear: "fear",
   surprise: "surprise",
-  love: "neutral",  // No direct equivalent, mapping to neutral
+  love: "love",  // No direct equivalent, mapping to neutral
   neutral: "neutral",
   disgust: "disgust"
 };
 
 const MOOD_CONFIGS = {
+  love: {
+    seed_tracks: '1dGr1c8CrMLDpV6mPbImSI', // "Lover" by Pharrell Williams
+    seed_genres: 'pop,dance',
+    seed_artists: '06HL4z0CvFAxyc27GXpf02' // Taylor SWift
+  },
   happy: {
     seed_tracks: '1h6gqPefhCPh4s5v0POWrj', // "Happy" by Pharrell Williams
     seed_genres: 'pop,dance',
