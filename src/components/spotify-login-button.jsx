@@ -16,11 +16,11 @@ export default function SpotifyLoginButton() {
         REDIRECT_URI
       )}&response_type=${RESPONSE_TYPE}&scope=user-read-private user-read-email playlist-modify-public playlist-modify-private`;
       
-      window.location.href = authUrl;
+      // Store URL in localStorage
+      localStorage.setItem("spotify_auth_url", authUrl);
       
-      setTimeout(() => {
-        navigate("/playlists");
-      }, 2000); // Adjust delay as needed
+      // Redirect to Spotify login
+      window.location.href = authUrl;
     };
   
 
