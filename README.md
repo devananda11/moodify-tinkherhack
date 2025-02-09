@@ -89,7 +89,8 @@ Then open **http://localhost:5173/** in your browser.
 <img width="1125" alt="image" src="https://github.com/user-attachments/assets/02a8ac21-b023-4f29-bbae-55ca09f4492f" />
 
 
-
+**Video Demonstration**
+[Download the video](https://github.com/user-attachments/assets/6a203a28-b191-4add-bc45-10a6db14224c)
 
 
 🚀 **Moodify is now live at:** [https://moodify-rho.vercel.app/](https://moodify-rho.vercel.app/) 🎵
