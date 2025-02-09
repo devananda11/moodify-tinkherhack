@@ -1,7 +1,7 @@
 # **Moodify**
 
 ## **Project Overview**
-Moodify is a web application that allows users to log in using **Spotify Authentication**, analyze their mood based on text input using the **Hugging Face RoBERTa API**, and receive song recommendations using **RapidAPI**. Users can review the suggested songs, remove unwanted ones, and save the final playlist directly to their **Spotify account**.
+Ever wanted someone to make you a Spotify playlist?...or maybe you tried to make one for yourself but ended up choosing songs from your liked list cause you didn't know any better ones. Well, this is for you guys (like us) who want to take their playlist to another level. Just let Moodify know your mood and our AI-powered system will fetch out a list of songs for **you**. Curate and adjust the songs to your liking and press the Create Playlist button. The playlist is now up and running on your Spotify account!
 
 ---
 
@@ -76,17 +76,21 @@ Then open **http://localhost:5173/** in your browser.
 ---
 
 ## **Screenshots**
-📸 **Login Page:** _(User logs in using Spotify)_
+📸 Login Page:<img width="1469" alt="image" src="https://github.com/user-attachments/assets/9e5f479d-7ca6-4f89-9741-6ba6184401bf" />
 
-📸 **Mood Analysis Page:** _(User enters their mood, and API detects emotion)_
 
-📸 **Song Suggestions Page:** _(User sees recommended songs and can delete unwanted ones)_
+📸 Mood Analysis Page:![IMG_9995](https://github.com/user-attachments/assets/d3257f9b-3571-46b6-ad43-ff9b20bc8166)
 
-📸 **Final Playlist Page:** _(User saves the final selection to Spotify)_
 
-_(Add screenshots when available)_
+📸 Song Suggestions Page:<img width="1469" alt="image" src="https://github.com/user-attachments/assets/d04e23ad-799f-40e6-811f-ac7da68f279f" />
 
----
+
+📸 Final Playlist Page:<img width="1469" alt="image" src="https://github.com/user-attachments/assets/eeea4110-755e-46e2-a068-f08f843841bf" />
+<img width="1125" alt="image" src="https://github.com/user-attachments/assets/02a8ac21-b023-4f29-bbae-55ca09f4492f" />
+
+
+
+
 
 🚀 **Moodify is now live at:** [https://moodify-rho.vercel.app/](https://moodify-rho.vercel.app/) 🎵
 
